@@ -1,15 +1,20 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using SAV.Application.Repositories.Csv;
+using SAV.Application.Interfaces;
 using SAV.Domain.Entities.Csv;
+using SAV.Persistence.Sources.CSV.Base;
+using System.Collections.Generic;
+using System.Threading.Tasks; 
 
 namespace SAV.Persistence.Sources.CSV.Repositories
 {
-    public sealed class ProductsRepository : IProductsRepository
+    public sealed class ProductsRepository : BaseCsvRepository, IExtractor<Products>
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<ProductsRepository> _logger;
         private readonly string _filePath;
+
+        public string SourceName => "CsvProducts";
 
         public ProductsRepository(IConfiguration configuration,
                                   ILogger<ProductsRepository> logger)
@@ -18,31 +23,12 @@ namespace SAV.Persistence.Sources.CSV.Repositories
             _logger = logger;
             _filePath = _configuration.GetSection("CsvFilePaths:Products").Value ?? string.Empty;
         }
-        public async Task<List<Products>> GetAll()
+
+        public async Task<IEnumerable<Products>> ExtractAsync()
         {
-            _logger.LogInformation("Starting to read Products CSV file from path: {FilePath}", _filePath);
-            List<Products> productsList = new();
+            _logger.LogInformation("Extracting data from {Source} at path: {FilePath}", SourceName, _filePath);
 
-            if (!File.Exists(_filePath))
-            {
-                _logger.LogWarning("Products CSV file not found at path: {FilePath}", _filePath);
-                return productsList;
-            }
-
-            try
-            {
-                using var reader = new StreamReader(_filePath);
-                using var csv = new CsvHelper.CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
-
-                await foreach (var product in csv.GetRecordsAsync<Products>())
-                {
-                    productsList.Add(product);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while reading the Products CSV file.");
-            }
+            List<Products> productsList = await ReadCsvFileAsync<Products>(_filePath, _logger);
 
             return productsList;
         }

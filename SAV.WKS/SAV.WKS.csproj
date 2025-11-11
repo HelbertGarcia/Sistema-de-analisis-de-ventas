@@ -10,4 +10,26 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SAV.Api\SAV.Api.csproj" />
+    <ProjectReference Include="..\SAV.Application\SAV.Application.csproj" />
+    <ProjectReference Include="..\SAV.Persistence\SAV.Persistence.csproj" />
+    <ProjectReference Include="..\SistemaDeAnalisisDeVentas.Domain\SAV.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="CsvFiles\customers.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="CsvFiles\orders.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="CsvFiles\order_details.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="CsvFiles\products.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

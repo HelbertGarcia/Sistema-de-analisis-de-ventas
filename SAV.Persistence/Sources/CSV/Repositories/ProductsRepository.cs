@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SAV.Persistence.Sources.CSV.Repositories
 {
-    public sealed class ProductsRepository : BaseCsvRepository, IExtractor<Products>
+    public sealed class ProductsRepository : BaseCsvRepository, IExtractor<DbProducts>
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<ProductsRepository> _logger;
@@ -24,11 +24,11 @@ namespace SAV.Persistence.Sources.CSV.Repositories
             _filePath = _configuration.GetSection("CsvFilePaths:Products").Value ?? string.Empty;
         }
 
-        public async Task<IEnumerable<Products>> ExtractAsync()
+        public async Task<IEnumerable<DbProducts>> ExtractAsync()
         {
             _logger.LogInformation("Extracting data from {Source} at path: {FilePath}", SourceName, _filePath);
 
-            List<Products> productsList = await ReadCsvFileAsync<Products>(_filePath, _logger);
+            List<DbProducts> productsList = await ReadCsvFileAsync<DbProducts>(_filePath, _logger);
 
             return productsList;
         }

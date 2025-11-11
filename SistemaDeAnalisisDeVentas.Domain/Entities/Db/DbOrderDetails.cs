@@ -1,5 +1,5 @@
 ﻿
-namespace SAV.Domain.Entities.Csv
+namespace SAV.Domain.Entities.Db
 {
     public class DbOrderDetails
     {

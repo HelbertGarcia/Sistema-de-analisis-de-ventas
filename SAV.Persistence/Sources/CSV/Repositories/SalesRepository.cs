@@ -6,7 +6,7 @@ using SAV.Application.Interfaces;
 
 namespace SAV.Persistence.Sources.CSV.Repositories
 {
-    public sealed class VentasCsvRepository : BaseCsvRepository, IExtractor<Sales>
+    public sealed class VentasCsvRepository : BaseCsvRepository, IExtractor<DbSales>
     {
         private readonly ILogger<VentasCsvRepository> _logger;
         private readonly string _ordersFilePath;
@@ -21,34 +21,34 @@ namespace SAV.Persistence.Sources.CSV.Repositories
             _orderDetailsFilePath = configuration.GetSection("CsvFilePaths:OrderDetails").Value ?? string.Empty;
         }
 
-        public async Task<IEnumerable<Sales>> ExtractAsync()
+        public async Task<IEnumerable<DbSales>> ExtractAsync()
         {
             _logger.LogInformation("Extracting data from {Source}", SourceName);
             return await GetVentasUnificadasAsync();
         }
 
-        private async Task<List<Sales>> GetVentasUnificadasAsync()
+        private async Task<List<DbSales>> GetVentasUnificadasAsync()
         {
             _logger.LogInformation("Starting CSV extraction for Orders and OrderDetails.");
 
-            var ordersList = await ReadCsvFileAsync<Orders>(_ordersFilePath, _logger);
-            var detailsList = await ReadCsvFileAsync<OrderDetails>(_orderDetailsFilePath, _logger);
+            var ordersList = await ReadCsvFileAsync<DbOrders>(_ordersFilePath, _logger);
+            var detailsList = await ReadCsvFileAsync<DbOrderDetails>(_orderDetailsFilePath, _logger);
 
             if (!ordersList.Any() || !detailsList.Any())
             {
                 _logger.LogWarning("Orders or OrderDetails list is empty. No join can be performed.");
-                return new List<Sales>();
+                return new List<DbSales>();
             }
 
             _logger.LogInformation("Joining CSV data...");
             var ordersDictionary = ordersList.ToDictionary(o => o.OrderID);
-            var ventasUnificadas = new List<Sales>();
+            var ventasUnificadas = new List<DbSales>();
 
             foreach (var detail in detailsList)
             {
                 if (ordersDictionary.TryGetValue(detail.OrderID, out var order))
                 {
-                    ventasUnificadas.Add(new Sales
+                    ventasUnificadas.Add(new DbSales
                     {
                         OrderID = order.OrderID,
                         CustomerID = order.CustomerID,

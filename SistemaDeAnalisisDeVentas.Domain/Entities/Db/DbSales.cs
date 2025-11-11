@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SAV.Domain.Entities.Csv
+namespace SAV.Domain.Entities.Db
 {
     public class DbSales
     {

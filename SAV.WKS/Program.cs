@@ -10,9 +10,9 @@ namespace SAV.WKS
             var builder = Host.CreateApplicationBuilder(args);
             builder.Services.AddHostedService<Worker>();
 
-            builder.Services.AddScoped<IExtractor<Products>, ProductsRepository>();
+            builder.Services.AddScoped<IExtractor<DbProducts>, ProductsRepository>();
             builder.Services.AddScoped<IExtractor<Customers>, CustomersRepository>();
-            builder.Services.AddScoped<IExtractor<Sales>, VentasCsvRepository>();
+            builder.Services.AddScoped<IExtractor<DbSales>, VentasCsvRepository>();
 
             var host = builder.Build();
             host.Run();

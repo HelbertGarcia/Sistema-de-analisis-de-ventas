@@ -1,7 +1,7 @@
 ﻿
 namespace SAV.Domain.Entities.Csv
 {
-    public class DbOrderDetails
+    public class CsvOrderDetails
     {
         public int OrderID { get; set; }
 

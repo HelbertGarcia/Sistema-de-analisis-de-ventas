@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SAV.Domain.Entities.Csv
 {
-    public class DbSales
+    public class CsvSales
     {
         public int? OrderID { get; set; }
 

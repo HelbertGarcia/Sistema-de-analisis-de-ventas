@@ -2,10 +2,6 @@
 using Microsoft.Extensions.Logging;
 using SAV.Application.Interfaces;
 using SAV.Domain.Entities.Db;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SAV.Persistence.Sources.Db.Repositories
 {

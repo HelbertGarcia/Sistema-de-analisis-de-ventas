@@ -3,12 +3,10 @@ using Microsoft.Extensions.Logging;
 using SAV.Application.Interfaces;
 using SAV.Domain.Entities.Csv;
 using SAV.Persistence.Sources.CSV.Base;
-using System.Collections.Generic; 
-using System.Threading.Tasks; 
 
 namespace SAV.Persistence.Sources.CSV.Repositories
 {
-    public sealed class CustomersRepository : BaseCsvRepository, IExtractor<Customers>
+    public sealed class CustomersRepository : BaseCsvRepository, IExtractor<CsvCustomers>
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<CustomersRepository> _logger;
@@ -24,11 +22,11 @@ namespace SAV.Persistence.Sources.CSV.Repositories
             _filePath = _configuration.GetSection("CsvFilePaths:Customers").Value ?? string.Empty;
         }
 
-        public async Task<IEnumerable<Customers>> ExtractAsync()
+        public async Task<IEnumerable<CsvCustomers>> ExtractAsync()
         {
             _logger.LogInformation("Extracting data from {Source} at path: {FilePath}", SourceName, _filePath);
 
-            List<Customers> customersList = await ReadCsvFileAsync<Customers>(_filePath, _logger);
+            List<CsvCustomers> customersList = await ReadCsvFileAsync<CsvCustomers>(_filePath, _logger);
 
             return customersList;
         }

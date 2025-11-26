@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SAV.Domain.Entities.Db
+﻿namespace SAV.Domain.Entities.Db
 {
     public class DbSales
     {

@@ -33,9 +33,9 @@ namespace SAV.Persistence.Sources.Db
                 entity.ToTable("Orders");
                 entity.HasKey(o => o.OrderID);
 
-                entity.HasOne<DbCustomers>() 
-                      .WithMany()           
-                      .HasForeignKey(o => o.CustomerID); 
+                entity.HasOne<DbCustomers>()
+                      .WithMany() 
+                      .HasForeignKey(o => o.CustomerID);
             });
 
             modelBuilder.Entity<DbOrderDetails>(entity =>
@@ -44,15 +44,14 @@ namespace SAV.Persistence.Sources.Db
 
                 entity.HasKey(d => new { d.OrderID, d.ProductID });
 
-                entity.HasOne<DbOrders>()         
-                      .WithMany()                 
-                      .HasForeignKey(d => d.OrderID); 
+                entity.HasOne<DbOrders>()
+                      .WithMany()
+                      .HasForeignKey(d => d.OrderID);
 
-                entity.HasOne<DbProducts>()        
-                      .WithMany()                 
+                entity.HasOne<DbProducts>()
+                      .WithMany()
                       .HasForeignKey(d => d.ProductID);
             });
         }
-
     }
 }

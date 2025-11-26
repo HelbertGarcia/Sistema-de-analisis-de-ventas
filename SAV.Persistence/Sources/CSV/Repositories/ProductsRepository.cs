@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SAV.Application.Interfaces;
-using SAV.Domain.Entities.Csv;
+using SAV.Domain.Entities.Csv; 
 using SAV.Persistence.Sources.CSV.Base;
 using System.Collections.Generic;
-using System.Threading.Tasks; 
+using System.Threading.Tasks;
 
 namespace SAV.Persistence.Sources.CSV.Repositories
 {
-    public sealed class ProductsRepository : BaseCsvRepository, IExtractor<DbProducts>
+    public sealed class ProductsRepository : BaseCsvRepository, IExtractor<CsvProducts>
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<ProductsRepository> _logger;
@@ -24,11 +24,13 @@ namespace SAV.Persistence.Sources.CSV.Repositories
             _filePath = _configuration.GetSection("CsvFilePaths:Products").Value ?? string.Empty;
         }
 
-        public async Task<IEnumerable<DbProducts>> ExtractAsync()
+        // CAMBIO: Devuelve IEnumerable<Products>
+        public async Task<IEnumerable<CsvProducts>> ExtractAsync()
         {
             _logger.LogInformation("Extracting data from {Source} at path: {FilePath}", SourceName, _filePath);
 
-            List<DbProducts> productsList = await ReadCsvFileAsync<DbProducts>(_filePath, _logger);
+            // CAMBIO: Lee <Products>
+            List<CsvProducts> productsList = await ReadCsvFileAsync<CsvProducts>(_filePath, _logger);
 
             return productsList;
         }

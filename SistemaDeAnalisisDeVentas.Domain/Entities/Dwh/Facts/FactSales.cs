@@ -1,7 +1,12 @@
-﻿namespace SAV.Domain.Entities.Dwh.Facts
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SAV.Domain.Entities.Dwh.Facts
 {
+    [Table("FactSales", Schema = "Fact")]
     public class FactSales
     {
+        [Key]
         public int OrderKey { get; set; }
 
         public int DateKey { get; set; }

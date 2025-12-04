@@ -1,7 +1,12 @@
-﻿namespace SAV.Domain.Entities.Dwh.Dimentions
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SAV.Domain.Entities.Dwh.Dimentions
 {
+    [Table("DimCustomers", Schema = "Dimension")]
     public class DimCustomers
     {
+        [Key]
         public int CustomerKey { get; set; }
 
         public int CustomerId { get; set; }

@@ -36,8 +36,22 @@ namespace SAV.Persistence.Destination.Repositories
         {
             if (entities == null || !entities.Any()) return;
 
-            await _context.Set<TEntity>().AddRangeAsync(entities);
-            await _context.SaveChangesAsync();
+            const int batchSize = 5000;
+
+            int total = entities.Length;
+            int processed = 0;
+
+            while (processed < total)
+            {
+                var batch = entities.Skip(processed).Take(batchSize).ToArray();
+
+                await _context.Set<TEntity>().AddRangeAsync(batch);
+                await _context.SaveChangesAsync();
+
+                _context.ChangeTracker.Clear();
+
+                processed += batch.Length;
+            }
         }
 
         public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> filter)
